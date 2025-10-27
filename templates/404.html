@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Page Not Found (404){% endblock %}
+
+{% block content %}
+<div class="text-center my-5">
+  <h1 class="display-4 text-danger fw-bold">404</h1>
+  <p class="lead text-muted">Oops! The page you’re looking for doesn’t exist.</p>
+  <p class="text-muted">
+    It may have been moved, deleted, or perhaps you entered the wrong address.
+  </p>
+
+  <div class="mt-4">
+    <a href="{{ url_for('home') }}" class="btn btn-primary">
+      ← Back to Home
+    </a>
+  </div>
+
+  <img src="{{ url_for('static', filename='images/vet_dog.png') }}" 
+       alt="Lost Puppy" class="img-fluid mt-4" 
+       style="max-width: 300px;">
+</div>
+{% endblock %}
+

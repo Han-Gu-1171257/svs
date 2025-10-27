@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="{{ theme }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or "Selwyn Veterinary Services" }}</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: var(--bs-body-bg);
+      color: var(--bs-body-color);
+    }
+    footer {
+      margin-top: 50px;
+      padding: 20px 0;
+      border-top: 1px solid #ccc;
+      font-size: 0.9rem;
+      color: #777;
+    }
+    .navbar-dark .navbar-nav .nav-link.active {
+      font-weight: bold;
+      color: #ffc107 !important;
+    }
+  </style>
+</head>
+
+<body class="bg-body-secondary">
+
+<!-- =================== Navbar =================== -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">SVS</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link {% if request.endpoint == 'home' %}active{% endif %}" href="{{ url_for('home') }}">Home</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.endpoint == 'customers' %}active{% endif %}" href="{{ url_for('customers') }}">Customers</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.endpoint == 'services' %}active{% endif %}" href="{{ url_for('services') }}">Services</a></li>
+        <li class="nav-item"><a class="nav-link {% if request.endpoint == 'appointments' %}active{% endif %}" href="{{ url_for('appointments') }}">Appointments</a></li>
+      </ul>
+
+      <span class="navbar-text text-light">
+        <!-- 自动判断 now 是否为函数 -->
+        {% if now is callable %}
+          Current Date: {{ now().strftime("%d %b %Y") }}
+        {% else %}
+          Current Date: {{ now.strftime("%d %b %Y") }}
+        {% endif %}
+      </span>
+    </div>
+  </div>
+</nav>
+
+<!-- =================== Flash Messages =================== -->
+<div class="container mt-3">
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+      {% for category, message in messages %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{ message }}
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+  {% endwith %}
+</div>
+
+<!-- =================== Page Content =================== -->
+<div class="container mt-4">
+  {% block content %}{% endblock %}
+</div>
+
+<!-- =================== Footer =================== -->
+<footer class="text-center">
+  &copy; {{ now().year if now is callable else now.year }} Selwyn Veterinary Services |
+  Theme: {{ theme|capitalize }} Mode |
+  <a href="https://getbootstrap.com" target="_blank" class="text-decoration-none">Bootstrap 5</a>
+</footer>
+
+<!-- =================== JS =================== -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

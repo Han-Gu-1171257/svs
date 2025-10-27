@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">{{ customer.first_name }} {{ customer.family_name }}</h2>
+<p><strong>Email:</strong> {{ customer.email or "N/A" }}</p>
+<p><strong>Phone:</strong> {{ customer.phone or "N/A" }}</p>
+<p><strong>Date Joined:</strong> {{ customer.date_joined.strftime("%d %b %Y") }}</p>
+
+<h4 class="mt-5">Appointment History</h4>
+<div class="table-responsive">
+  <table class="table table-hover table-striped mt-3">
+    <thead class="table-dark">
+      <tr>
+        <th>Date / Time</th>
+        <th>Notes</th>
+        <th>Total Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in appointments %}
+        {% set is_future = a.appt_datetime > now() if now is callable else a.appt_datetime > now %}
+        <tr class="{% if is_future %}table-success{% endif %}">
+          <td>{{ a.appt_datetime.strftime("%d %b %Y %H:%M") }}</td>
+          <td>{{ a.notes or "-" }}</td>
+          <td>{{ money(a.total_price) }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="3" class="text-center text-muted">No appointments found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}
+
+
+
+
+
+
+
+
+
+

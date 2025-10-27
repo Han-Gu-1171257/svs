@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="text-center mt-4">
+  <h1 class="mb-3">Selwyn Veterinary Services</h1>
+  <p class="lead text-muted">Providing quality care for pets and farm animals since 1992</p>
+
+  <img src="{{ url_for('static', filename='images/vet_dog.png') }}" 
+       class="img-fluid rounded shadow mt-4 mb-3" 
+       alt="Veterinary Clinic" style="max-width: 600px;">
+
+  <div class="mt-3">
+    <p>Welcome to the SVS appointment system. Use the navigation bar above to manage customers, services, and appointments.</p>
+    <p class="text-muted">Today’s Date: 
+      {% if now is callable %}
+        {{ now().strftime("%d %b %Y") }}
+      {% else %}
+        {{ now.strftime("%d %b %Y") }}
+      {% endif %}
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+
+
+

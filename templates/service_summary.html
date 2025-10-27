@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4 text-center">
+    🧾 Service Performance Summary
+  </h2>
+
+  <table class="table table-hover table-striped shadow rounded-3">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Service Name</th>
+        <th scope="col">Times Used</th>
+        <th scope="col">Total Earned (NZD)</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in rows %}
+      <tr>
+        <td>{{ loop.index }}</td>
+        <td>{{ r.service_name }}</td>
+        <td>{{ r.times_used }}</td>
+        <td>{{ money(r.total_earned) }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {% if not rows %}
+  <div class="alert alert-warning text-center mt-3">
+    No data available for service summary.
+  </div>
+  {% endif %}
+</div>
+
+<!-- 🌗 Auto Dark/Light Mode -->
+<script>
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)');
+  const body = document.body;
+  function updateTheme() {
+    if (prefersDark.matches) {
+      body.classList.add('bg-dark', 'text-light');
+    } else {
+      body.classList.remove('bg-dark', 'text-light');
+    }
+  }
+  prefersDark.addEventListener('change', updateTheme);
+  updateTheme();
+</script>
+{% endblock %}
+
+
+
+
+
+
+

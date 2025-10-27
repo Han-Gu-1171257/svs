@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block content %}
+<h2 class="mb-4">Appointments</h2>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <p class="text-muted mb-0">All scheduled and completed appointments</p>
+  <a href="{{ url_for('add_appointment') }}" class="btn btn-success">
+    ➕ Add Appointment
+  </a>
+</div>
+
+{% if appts %}
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">Customer</th>
+        <th scope="col">Date &amp; Time</th>
+        <th scope="col">Notes</th>
+        <th scope="col" class="text-end">Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for a in appts %}
+        {% set is_future = a.appt_datetime > now() if now is callable else a.appt_datetime > now %}
+        <tr class="{% if is_future %}table-success{% endif %}">
+          <td>{{ a.customer_name }}</td>
+          <td>{{ a.appt_datetime.strftime("%d %b %Y %H:%M") }}</td>
+          <td>{{ a.notes or '-' }}</td>
+          <td class="text-end">{{ money(a.total_price) }}</td>
+        </tr>
+      {% else %}
+        <tr><td colspan="4" class="text-center text-muted">No appointments found.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% else %}
+  <p class="text-muted">No appointments found.</p>
+{% endif %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+

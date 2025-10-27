@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">Add New Appointment</h2>
+
+
+  <form method="POST" action="{{ url_for('add_appointment') }}">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="customer_id" class="form-label">Select Customer</label>
+        <select name="customer_id" id="customer_id" class="form-select" required>
+          <option value="">-- Choose a customer --</option>
+          {% for c in customers %}
+            <option value="{{ c.customer_id }}">{{ c.first_name }} {{ c.family_name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <div class="col-md-6">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" id="date" name="date" class="form-control" required>
+      </div>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="time" class="form-label">Time</label>
+        <input type="time" id="time" name="time" class="form-control" required>
+      </div>
+
+      <div class="col-md-6">
+        <label for="services" class="form-label">Select Services</label>
+        <select name="services" id="services" class="form-select" multiple required>
+          {% for s in services %}
+            <option value="{{ s.service_id }}">{{ s.service_name }} ({{ money(s.price) }})</option>
+          {% endfor %}
+        </select>
+        <small class="text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple</small>
+      </div>
+    </div>
+
+  
+    <div class="mb-3">
+      <label for="notes" class="form-label">Notes (optional)</label>
+      <textarea
+        id="notes"
+        name="notes"
+        class="form-control"
+        rows="3"
+        placeholder="Add any details for this appointment..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3">💾 Save Appointment</button>
+    <a href="{{ url_for('appointments') }}" class="btn btn-secondary mt-3">Cancel</a>
+  </form>
+</div>
+
+
+<script>
+  document.getElementById('date').addEventListener('change', function() {
+    const day = new Date(this.value).getUTCDay();
+    if (day === 0) {
+      alert("⚠️ Appointments cannot be booked on Sunday.");
+      this.value = "";
+    }
+  });
+</script>
+{% endblock %}
+
+
+
+

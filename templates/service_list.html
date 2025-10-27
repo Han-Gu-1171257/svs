@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="container mt-4">
+  <h2 class="mb-4">Our Services</h2>
+
+  {% if services %}
+  <div class="row">
+    {% for s in services %}
+    <div class="col-md-4 col-sm-6 mb-4">
+      <div class="card shadow-sm border-light h-100">
+        <div class="card-body">
+          <h5 class="card-title">{{ s.service_name }}</h5>
+          <p class="card-text text-muted">Service ID: {{ s.service_id }}</p>
+          <p class="card-text"><strong>Price:</strong> {{ money(s.price) }}</p>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div class="alert alert-info">No services found.</div>
+  {% endif %}
+</div>
+{% endblock %}
+
