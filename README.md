@@ -4,7 +4,7 @@
 
 ---
 
-## 💬 Discussion — My Design Decisions  
+## Discussion — My Design Decisions  
 
 When I started improving my milestone version, I had this “brilliant” idea to make everything fit on one big dashboard — customers, appointments, services, everything together.  
 In my head it sounded efficient, but in Flask it turned into chaos.  
@@ -65,7 +65,7 @@ It’s still not perfect, but it finally feels like something I could actually m
 
 ---
 
-## 🗃️ Database Questions  
+## Database Questions  
 
 ### 1 What is the database model used in your web app?  
 
