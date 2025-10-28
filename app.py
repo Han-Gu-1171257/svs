@@ -117,7 +117,7 @@ def add_appointment():
             date_str = request.form["date"]
             time_str = request.form["time"]
             selected_services = request.form.getlist("services")
-            notes = request.form.get("notes", "").strip()   # ✅ 获取 notes 文本
+            notes = request.form.get("notes", "").strip()   
             appt_datetime = datetime.strptime(f"{date_str} {time_str}", "%Y-%m-%d %H:%M")
 
 
