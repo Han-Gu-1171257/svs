@@ -1,7 +1,6 @@
 # Database connection configuration
 dbuser = "HanGu1171257"
-dbpass = "Lincoln5673793"   # <-- Enter your MySQL Server password here
-                                # (NOT PRIVATE - don't re-use an important password you use elsewhere)
+dbpass = "Lincoln5673793"   
 dbhost = "HanGu1171257.mysql.pythonanywhere-services.com"
 dbport = 3306
 dbname = "HanGu1171257$svs"
