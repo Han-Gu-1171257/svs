@@ -16,7 +16,6 @@ init_db(
     database="HanGu1171257$svs",
     port=3306
 )
-
 # -------------------------------
 # Utility Functions
 # -------------------------------
@@ -33,9 +32,6 @@ def fetch_all(sql, params=None):
     cur.close()
     return rows
 
-# -------------------------------
-# Routes
-# -------------------------------
 @app.route("/reports/services")
 def reports_services():
     cur = get_cursor()
@@ -54,6 +50,10 @@ def reports_services():
 
     return render_template("service_summary.html", rows=rows, money=money)
 
+
+# -------------------------------
+# Routes
+# -------------------------------
 
 @app.route("/")
 def home():
@@ -101,6 +101,32 @@ def customer_summary(customer_id):
     return render_template("customer_summary.html", title="Customer Detail",
                            customer=customer, appointments=appts, money=money)
 
+
+@app.route("/customers/add", methods=["GET", "POST"])
+def add_customer():
+    if request.method == "POST":
+        first_name = request.form.get("first_name", "").strip()
+        family_name = request.form.get("family_name", "").strip()
+        phone = request.form.get("phone", "").strip()
+        email = request.form.get("email", "").strip()
+
+        # ✅ Validation checks
+        if not first_name or not family_name or not phone:
+            flash("First name, family name, and phone number are required.", "danger")
+            return render_template("customer_add.html", values=request.form)
+
+        cur = get_cursor()
+        cur.execute("""
+            INSERT INTO customers (first_name, family_name, phone, email, date_joined)
+            VALUES (%s, %s, %s, %s, CURDATE());
+        """, (first_name, family_name, phone, email))
+        cur.connection.commit()
+        flash("✅ Customer added successfully!", "success")
+        return redirect(url_for("customers"))
+
+    return render_template("customer_add.html")
+
+
 @app.route("/appointments")
 def appointments():
     """Show all appointments with future highlight"""
@@ -117,6 +143,42 @@ def appointments():
     """)
     return render_template("appointment_list.html", title="Appointments",
                            appts=rows, money=money, now=datetime.now())
+
+
+
+@app.route("/customers/edit/<int:customer_id>", methods=["GET", "POST"])
+def edit_customer(customer_id):
+    cur = get_cursor()
+
+    # ✅ Retrieve current customer info
+    cur.execute("SELECT * FROM customers WHERE customer_id = %s;", (customer_id,))
+    customer = cur.fetchone()
+
+    if not customer:
+        flash("Customer not found.", "danger")
+        return redirect(url_for("customers"))
+
+    if request.method == "POST":
+        first_name = request.form.get("first_name", "").strip()
+        family_name = request.form.get("family_name", "").strip()
+        phone = request.form.get("phone", "").strip()
+        email = request.form.get("email", "").strip()
+
+        if not first_name or not family_name or not phone:
+            flash("First name, family name, and phone are required.", "danger")
+            return render_template("customer_edit.html", customer=customer)
+
+        # ✅ Update query
+        cur.execute("""
+            UPDATE customers
+            SET first_name=%s, family_name=%s, email=%s, phone=%s
+            WHERE customer_id=%s;
+        """, (first_name, family_name, email, phone, customer_id))
+        cur.connection.commit()
+        flash("✅ Customer details updated successfully!", "success")
+        return redirect(url_for("customers"))
+
+    return render_template("customer_edit.html", customer=customer)
 
 
 @app.route("/appointments/add", methods=["GET", "POST"])
@@ -183,7 +245,6 @@ def inject_now():
 # -------------------------------
 if __name__ == "__main__":
     app.run(debug=True)
-
 
 
 
