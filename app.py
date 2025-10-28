@@ -36,6 +36,24 @@ def fetch_all(sql, params=None):
 # -------------------------------
 # Routes
 # -------------------------------
+@app.route("/reports/services")
+def reports_services():
+    cur = get_cursor()
+    cur.execute("""
+        SELECT s.service_name,
+               COUNT(asv.service_id) AS times_used,
+               COALESCE(SUM(s.price), 0) AS total_earned
+        FROM services s
+        LEFT JOIN appointment_services asv ON s.service_id = asv.service_id
+        GROUP BY s.service_id, s.service_name
+        ORDER BY total_earned DESC;
+    """)
+    rows = cur.fetchall()
+    cur.close()
+
+
+    return render_template("service_summary.html", rows=rows, money=money)
+
 
 @app.route("/")
 def home():
